@@ -2,31 +2,562 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MyCU Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b3a75">
+<title>MyCU Dashboard – Carolina University</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
 
-<link rel="stylesheet" href="styles.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f4f5f7;
+  color: #111;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== HEADER ===== */
+.topbar {
+  background: #0b3a75;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 60px;
+  flex-shrink: 0;
+  color: white;
+}
+
+.logo-shield {
+  width: 42px; height: 46px;
+  background: #facc15;
+  border-radius: 4px 4px 50% 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: #0b3a75;
+  font-size: 15px;
+  letter-spacing: -0.3px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.school-info { line-height: 1.2; }
+.school-name { font-size: 15px; font-weight: 600; letter-spacing: 0.2px; }
+.school-sub { font-size: 10px; color: #facc15; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 2px; }
+
+.top-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.top-nav a {
+  color: white;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+.top-nav a:hover { opacity: 1; }
+.top-nav a.active { opacity: 1; border-bottom: 2px solid #facc15; padding-bottom: 2px; }
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+/* ===== LAYOUT ===== */
+.page {
+  display: grid;
+  grid-template-columns: 240px 1fr 300px;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: auto;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  font-size: 14px;
+  height: fit-content;
+}
+.sidebar h3 { font-size: 16px; margin: 10px 0 10px; }
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar li {
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.1s;
+}
+.sidebar li:hover { background: #eef2f7; }
+.sidebar li.active { background: #eef2f7; color: #0b3a75; font-weight: 600; }
+
+.breadcrumb { font-size: 12px; color: #777; margin: 0 0 10px; }
+
+.sidebar h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #888;
+  margin: 18px 0 6px;
+}
+.quick-link {
+  padding: 7px 10px;
+  cursor: pointer;
+  color: #0b3a75;
+  font-size: 13px;
+  border-radius: 4px;
+  text-decoration: underline;
+}
+.quick-link:hover { background: #eef2f7; }
+
+/* ===== CONTENT ===== */
+.content {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+h1 { font-size: 28px; font-weight: 600; margin: 0 0 20px; }
+h3 { font-size: 16px; font-weight: 600; margin: 0 0 12px; }
+p { font-size: 14px; margin: 0 0 8px; }
+
+.announcements-box {
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+}
+.announcement {
+  border-left: 3px solid red;
+  padding-left: 12px;
+  margin-bottom: 15px;
+}
+.announcement:last-child { margin-bottom: 0; }
+.announcement.info { border-left-color: #facc15; }
+.announcement h4 { margin: 0 0 4px; font-size: 15px; }
+.announcement h4::before { content: "● "; color: red; }
+.announcement.info h4::before { color: #b8940d; }
+.priority { color: red; font-size: 13px; font-weight: 600; margin: 0 0 6px; }
+.announcement ul { margin: 6px 0 0 20px; padding: 0; font-size: 14px; }
+
+/* ===== RIGHT PANEL ===== */
+.right-panel {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  height: fit-content;
+}
+.right-panel h4 { margin: 0 0 10px; }
+.right-panel button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #0b3a75;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.right-panel button:hover { background: #174ea6; }
+
+/* ===== BARON BUTTON ===== */
+.help-btn {
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  right: 20px;
+  background: #facc15;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 18px 10px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  z-index: 9999;
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-family: 'Inter', sans-serif;
+  color: #0b3a75;
+}
+.help-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
+.help-btn:active { transform: scale(0.96); }
+
+.baron-face {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.baron-face svg { width: 22px; height: 22px; }
+
+/* ===== CHATBOX ===== */
+.chatbox {
+  position: fixed;
+  right: 20px;
+  bottom: 85px;
+  width: 360px;
+  height: 540px;
+  max-height: calc(100vh - 110px);
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.28);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 9998;
+  opacity: 0;
+  transform: translateY(16px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.chatbox.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+.chatbox__header {
+  background: #0b3a75;
+  color: white;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.baron-avatar-header {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: #facc15;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-weight: 700;
+  color: #0b3a75;
+  font-size: 17px;
+  font-family: 'Inter', sans-serif;
+}
+
+.chatbox__header .info { flex: 1; min-width: 0; }
+.chatbox__header .title { font-size: 15px; font-weight: 600; }
+.chatbox__header .subtitle {
+  font-size: 11px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.online-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px rgba(74,222,128,0.8);
+}
+
+.chat-btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  cursor: pointer;
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0;
+  transition: background 0.1s;
+}
+.chat-btn:hover { background: rgba(255,255,255,0.2); }
+
+.chatbox__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.msg {
+  max-width: 85%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.45;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+.msg--bot {
+  background: white;
+  color: #111;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px 14px 14px 14px;
+  align-self: flex-start;
+}
+.msg--user {
+  background: #0b3a75;
+  color: white;
+  border-radius: 14px 14px 4px 14px;
+  align-self: flex-end;
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 12px 14px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px 14px 14px 14px;
+  width: fit-content;
+  align-self: flex-start;
+}
+.typing-indicator span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #888;
+  animation: bounce 1.3s infinite ease-in-out;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.18s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-5px); opacity: 1; }
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px;
+  background: white;
+  border-top: 1px solid #eee;
+  flex-shrink: 0;
+}
+.suggestion-chip {
+  padding: 6px 12px;
+  font-size: 12px;
+  border: 1px solid #0b3a75;
+  border-radius: 20px;
+  color: #0b3a75;
+  background: white;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.1s;
+  white-space: nowrap;
+}
+.suggestion-chip:hover { background: #eef2f7; }
+.suggestion-chip:active { transform: scale(0.95); }
+
+.chatbox__input {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid #e5e7eb;
+  background: white;
+  flex-shrink: 0;
+  position: relative;
+}
+.chatbox__input input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 22px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  background: white;
+  min-width: 0;
+}
+.chatbox__input input:focus { border-color: #0b3a75; }
+.chatbox__input input::placeholder { color: #aaa; }
+.chatbox__input input:disabled { background: #f5f5f5; }
+
+.chatbox__input button {
+  background: #0b3a75;
+  color: white;
+  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.15s;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.chatbox__input button:hover:not(:disabled) { background: #174ea6; }
+.chatbox__input button:disabled { background: #bbb; cursor: default; }
+
+.msg--error {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  align-self: center;
+  max-width: 95%;
+  text-align: center;
+}
+
+/* ================================
+   MOBILE (≤ 768px)
+================================ */
+@media (max-width: 768px) {
+
+  .topbar { padding: 0 14px; min-height: 56px; }
+  .topbar-left { height: 56px; gap: 10px; }
+  .logo-shield { width: 34px; height: 38px; font-size: 13px; }
+  .school-name { font-size: 13px; }
+  .school-sub { font-size: 9px; letter-spacing: 1px; }
+
+  .menu-toggle { display: block; }
+
+  .top-nav {
+    position: absolute;
+    top: 56px;
+    left: 0; right: 0;
+    background: #0b3a75;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .top-nav.open { max-height: 500px; padding: 8px 0; }
+  .top-nav a {
+    padding: 12px 20px;
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 14px;
+  }
+  .top-nav a.active {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-left: 3px solid #facc15;
+    padding-left: 17px;
+  }
+
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .content { order: 1; padding: 16px; }
+  .sidebar { order: 2; padding: 14px; }
+  .right-panel { order: 3; padding: 14px; }
+
+  h1 { font-size: 22px; margin-bottom: 14px; }
+  h3 { font-size: 15px; }
+
+  .announcements-box { padding: 12px; }
+  .announcement h4 { font-size: 14px; }
+  .announcement ul { font-size: 13px; }
+
+  .right-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .right-panel h4 { grid-column: 1 / -1; margin: 0 0 4px; }
+  .right-panel button {
+    margin-bottom: 0;
+    font-size: 11px;
+    padding: 12px 8px;
+    letter-spacing: 0.3px;
+  }
+
+  .help-btn {
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    right: 16px;
+    padding: 8px 16px 8px 8px;
+    font-size: 13px;
+  }
+  .baron-face { width: 30px; height: 30px; }
+  .baron-face svg { width: 18px; height: 18px; }
+
+  .chatbox {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    border-radius: 0;
+    z-index: 10000;
+    transform: translateY(100%);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .chatbox.active { transform: translateY(0); }
+
+  .chatbox__header {
+    padding: 14px 16px;
+    padding-top: calc(14px + env(safe-area-inset-top));
+  }
+  .chatbox__input {
+    padding: 10px 12px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  }
+  .chatbox__messages { padding: 14px; }
+  .msg { font-size: 15px; max-width: 88%; }
+  .suggestions { padding: 10px 12px; overflow-x: auto; flex-wrap: nowrap; }
+  .suggestion-chip { flex-shrink: 0; font-size: 13px; padding: 7px 14px; }
+  .chatbox__input input { font-size: 16px; padding: 12px 16px; }
+  .chatbox__input button { width: 44px; height: 44px; }
+}
+
+@media (max-width: 380px) {
+  .right-panel { grid-template-columns: 1fr; }
+  .right-panel button { font-size: 12px; padding: 11px; }
+}
+</style>
 </head>
+
 <body>
 
-<!-- FILE:// WARNING (only shown when opened directly, not via the server) -->
-<div id="file-warning" class="file-warning" hidden>
-  <strong>Heads up:</strong> you opened this page from your files.
-  Baron's chat won't work here because browsers block local pages
-  from talking to <code>http://localhost</code>. Please open
-  <a href="http://localhost:3000">http://localhost:3000</a>
-  in your browser after running <code>npm start</code>.
-</div>
-
-<!-- HEADER -->
 <header class="topbar">
   <div class="topbar-left">
-    <img src="assets/logo.png" class="logo" alt="Carolina University">
+    <div class="logo-shield">CU</div>
+    <div class="school-info">
+      <div class="school-name">Carolina University</div>
+      <div class="school-sub">MyCU Portal</div>
+    </div>
   </div>
 
-  <nav class="top-nav">
-    <a>Home</a>
+  <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">&#9776;</button>
+
+  <nav class="top-nav" id="top-nav">
+    <a class="active">Home</a>
     <a>Admissions</a>
     <a>Retention</a>
     <a>Students</a>
@@ -41,41 +572,34 @@
 <div class="page">
 
   <aside class="sidebar">
-    <p class="breadcrumb">You are here: <br> Home &gt; Home</p>
-
+    <p class="breadcrumb">You are here: Home &rsaquo; Home</p>
     <h3>MyCU</h3>
     <ul>
-      <li>Home</li>
+      <li class="active">Home</li>
       <li>Change Password</li>
       <li>Forms</li>
-      <li>IRB - Research with Human Subjects</li>
+      <li>IRB &ndash; Research with Human Subjects</li>
       <li>Campus Health</li>
       <li>Early Alert Messages</li>
     </ul>
-
     <h4>Quick Links</h4>
-    <ul>
-      <li>My Courses</li>
-      <li>CU Email</li>
-      <li>Microsoft 365</li>
-      <li>Online Bookstore</li>
-    </ul>
+    <div class="quick-link">My Courses</div>
+    <div class="quick-link">CU Email</div>
+    <div class="quick-link">Microsoft 365</div>
+    <div class="quick-link">Online Bookstore</div>
   </aside>
 
   <main class="content">
     <h1>MyCU</h1>
-
     <div class="announcements-box">
       <h3>Announcements</h3>
-
       <div class="announcement">
         <h4>Remote Operations, March 16th</h4>
         <p class="priority">High priority</p>
         <p>Carolina University will operate remotely on Monday.</p>
         <p>Students will attend classes virtually.</p>
       </div>
-
-      <div class="announcement">
+      <div class="announcement info">
         <h4>Summer Course Registration</h4>
         <p>Registration is now open for Summer courses.</p>
         <ul>
@@ -99,47 +623,190 @@
 
 </div>
 
-<!-- FLOATING HELP BUTTON -->
 <button id="chat-trigger" class="help-btn" aria-label="Open Baron assistant">
-  <img src="assets/bot.png" alt="">
-  <span class="help-btn__label">Ask Baron</span>
+  <div class="baron-face">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="8" width="16" height="11" rx="3" fill="#0b3a75"/>
+      <circle cx="9" cy="13" r="1.5" fill="white"/>
+      <circle cx="15" cy="13" r="1.5" fill="white"/>
+      <rect x="9" y="16" width="6" height="1.5" rx="0.75" fill="white"/>
+      <path d="M9 8V6a3 3 0 016 0v2" stroke="#0b3a75" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="12" cy="5.5" r="1" fill="#0b3a75"/>
+    </svg>
+  </div>
+  Ask Baron
 </button>
 
-<!-- CHAT WINDOW -->
-<section id="chatbox" class="chatbox" aria-hidden="true">
+<section id="chatbox" class="chatbox" role="dialog" aria-label="Baron Virtual Assistant">
   <header class="chatbox__header">
-    <div class="chatbox__title">
-      <div class="chatbox__avatar">B</div>
-      <div>
-        <div class="chatbox__name">Baron</div>
-        <div class="chatbox__status"><span class="dot"></span> MyCU Virtual Assistant</div>
-      </div>
+    <div class="baron-avatar-header">B</div>
+    <div class="info">
+      <div class="title">Baron</div>
+      <div class="subtitle"><span class="online-dot"></span> MyCU Virtual Assistant</div>
     </div>
-    <div class="chatbox__actions">
-      <button id="chat-reset" class="icon-btn" title="Start a new chat" aria-label="Start a new chat">&#8635;</button>
-      <button id="chat-close" class="icon-btn" title="Close" aria-label="Close">&times;</button>
-    </div>
+    <button class="chat-btn" id="chat-reset" aria-label="New conversation" title="Start over">&#8635;</button>
+    <button class="chat-btn" id="chat-close" aria-label="Close chat">&#x2715;</button>
   </header>
 
-  <div id="messages" class="chatbox__messages" role="log" aria-live="polite"></div>
+  <div id="messages" class="chatbox__messages"></div>
 
-  <div id="quick-actions" class="chatbox__quick">
-    <button class="chip" data-q="How do I change my MyCU password?">Change password</button>
-    <button class="chip" data-q="Who is the president of Carolina University?">Who's the president?</button>
-    <button class="chip" data-q="What undergraduate programs does Carolina University offer?">Programs</button>
-    <button class="chip" data-q="How much is tuition at Carolina University?">Tuition</button>
-    <button class="chip" data-q="How do I contact the Helpdesk?">Helpdesk</button>
-    <button class="chip" data-q="How do I register for courses?">Register for courses</button>
+  <div class="suggestions" id="suggestions">
+    <div class="suggestion-chip" data-msg="How do I change my password?">Change password</div>
+    <div class="suggestion-chip" data-msg="Who is the president of Carolina University?">Who's the president?</div>
+    <div class="suggestion-chip" data-msg="What programs does Carolina University offer?">Programs</div>
+    <div class="suggestion-chip" data-msg="How do I pay tuition?">Tuition</div>
+    <div class="suggestion-chip" data-msg="How do I contact the helpdesk?">Helpdesk</div>
+    <div class="suggestion-chip" data-msg="How do I register for courses?">Register for courses</div>
   </div>
 
-  <form id="chat-form" class="chatbox__input" autocomplete="off">
-    <textarea id="chat-text" rows="1" placeholder="Ask Baron anything about MyCU..." required></textarea>
-    <button type="submit" aria-label="Send">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    </button>
-  </form>
+  <div class="chatbox__input">
+    <input id="chat-text" type="text" placeholder="Ask Baron anything about MyCU..."
+           autocomplete="off" data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false">
+    <button id="send-btn" aria-label="Send">&#9658;</button>
+  </div>
 </section>
 
-<script src="app.js"></script>
+<script>
+(function () {
+
+  const API_URL = "/api/chat";
+
+  let conversationHistory = [];
+  let isLoading = false;
+
+  const trigger      = document.getElementById("chat-trigger");
+  const chatbox      = document.getElementById("chatbox");
+  const closeBtn     = document.getElementById("chat-close");
+  const resetBtn     = document.getElementById("chat-reset");
+  const messagesEl   = document.getElementById("messages");
+  const input        = document.getElementById("chat-text");
+  const sendBtn      = document.getElementById("send-btn");
+  const suggestions  = document.getElementById("suggestions");
+  const menuToggle   = document.getElementById("menu-toggle");
+  const topNav       = document.getElementById("top-nav");
+
+  menuToggle.addEventListener("click", () => topNav.classList.toggle("open"));
+  topNav.addEventListener("click", (e) => {
+    if (e.target.tagName === "A") topNav.classList.remove("open");
+  });
+
+  function openChat() {
+    chatbox.classList.add("active");
+    if (conversationHistory.length === 0) showWelcome();
+    if (window.innerWidth > 768) setTimeout(() => input.focus(), 300);
+  }
+
+  function closeChat() {
+    chatbox.classList.remove("active");
+    input.blur();
+  }
+
+  trigger.addEventListener("click", () => {
+    if (chatbox.classList.contains("active")) closeChat();
+    else openChat();
+  });
+
+  closeBtn.addEventListener("click", closeChat);
+
+  resetBtn.addEventListener("click", () => {
+    if (conversationHistory.length > 0 && confirm("Start a new conversation?")) {
+      conversationHistory = [];
+      messagesEl.innerHTML = "";
+      showWelcome();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeChat();
+  });
+
+  suggestions.addEventListener("click", (e) => {
+    const chip = e.target.closest(".suggestion-chip");
+    if (!chip || isLoading) return;
+    submitMessage(chip.dataset.msg);
+  });
+
+  sendBtn.addEventListener("click", () => handleSend());
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); handleSend(); }
+  });
+
+  function handleSend() {
+    const text = input.value.trim();
+    if (!text || isLoading) return;
+    input.value = "";
+    submitMessage(text);
+  }
+
+  async function submitMessage(text) {
+    appendMessage("user", text);
+    conversationHistory.push({ role: "user", content: text });
+
+    setLoading(true);
+    const typingEl = appendTyping();
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: conversationHistory })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "API error " + response.status);
+
+      const reply = data.reply || "I could not generate a response. Please try again.";
+      conversationHistory.push({ role: "assistant", content: reply });
+
+      typingEl.remove();
+      appendMessage("bot", reply);
+    } catch (err) {
+      typingEl.remove();
+      appendError("Connection error. Please check your connection and try again.");
+      console.error("Baron error:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function showWelcome() {
+    appendMessage("bot", "Hi! I'm Baron, your MyCU assistant. I can help you navigate the portal, find forms, reset your password, register for courses, and answer questions about Carolina University. What can I help you with?");
+  }
+
+  function appendMessage(role, text) {
+    const div = document.createElement("div");
+    div.className = "msg " + (role === "user" ? "msg--user" : "msg--bot");
+    div.textContent = text;
+    messagesEl.appendChild(div);
+    requestAnimationFrame(() => { messagesEl.scrollTop = messagesEl.scrollHeight; });
+    return div;
+  }
+
+  function appendTyping() {
+    const div = document.createElement("div");
+    div.className = "typing-indicator";
+    div.innerHTML = "<span></span><span></span><span></span>";
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
+  }
+
+  function appendError(msg) {
+    const div = document.createElement("div");
+    div.className = "msg msg--error";
+    div.textContent = msg;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function setLoading(state) {
+    isLoading = state;
+    sendBtn.disabled = state;
+    input.disabled = state;
+    if (!state && window.innerWidth > 768) input.focus();
+  }
+
+})();
+</script>
+
 </body>
 </html>
