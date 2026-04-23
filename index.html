@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyCU Dashboard</title>
+
+<link rel="stylesheet" href="styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- FILE:// WARNING (only shown when opened directly, not via the server) -->
+<div id="file-warning" class="file-warning" hidden>
+  <strong>Heads up:</strong> you opened this page from your files.
+  Baron's chat won't work here because browsers block local pages
+  from talking to <code>http://localhost</code>. Please open
+  <a href="http://localhost:3000">http://localhost:3000</a>
+  in your browser after running <code>npm start</code>.
+</div>
+
+<!-- HEADER -->
+<header class="topbar">
+  <div class="topbar-left">
+    <img src="assets/logo.png" class="logo" alt="Carolina University">
+  </div>
+
+  <nav class="top-nav">
+    <a>Home</a>
+    <a>Admissions</a>
+    <a>Retention</a>
+    <a>Students</a>
+    <a>Courses</a>
+    <a>Finances</a>
+    <a>Faculty</a>
+    <a>Staff</a>
+    <a>Student Services</a>
+  </nav>
+</header>
+
+<div class="page">
+
+  <aside class="sidebar">
+    <p class="breadcrumb">You are here: <br> Home &gt; Home</p>
+
+    <h3>MyCU</h3>
+    <ul>
+      <li>Home</li>
+      <li>Change Password</li>
+      <li>Forms</li>
+      <li>IRB - Research with Human Subjects</li>
+      <li>Campus Health</li>
+      <li>Early Alert Messages</li>
+    </ul>
+
+    <h4>Quick Links</h4>
+    <ul>
+      <li>My Courses</li>
+      <li>CU Email</li>
+      <li>Microsoft 365</li>
+      <li>Online Bookstore</li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <h1>MyCU</h1>
+
+    <div class="announcements-box">
+      <h3>Announcements</h3>
+
+      <div class="announcement">
+        <h4>Remote Operations, March 16th</h4>
+        <p class="priority">High priority</p>
+        <p>Carolina University will operate remotely on Monday.</p>
+        <p>Students will attend classes virtually.</p>
+      </div>
+
+      <div class="announcement">
+        <h4>Summer Course Registration</h4>
+        <p>Registration is now open for Summer courses.</p>
+        <ul>
+          <li>Graduating early</li>
+          <li>Improve GPA</li>
+          <li>Reduced costs</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <aside class="right-panel">
+    <h4>Information</h4>
+    <button>NEW STUDENT ORIENTATION</button>
+    <button>SERVICES STATUS</button>
+    <button>ECHECKLIST</button>
+    <button>HELPDESK</button>
+    <button>COMPUTER REQUIREMENTS</button>
+    <button>DIRECTORY</button>
+  </aside>
+
+</div>
+
+<!-- FLOATING HELP BUTTON -->
+<button id="chat-trigger" class="help-btn" aria-label="Open Baron assistant">
+  <img src="assets/bot.png" alt="">
+  <span class="help-btn__label">Ask Baron</span>
+</button>
+
+<!-- CHAT WINDOW -->
+<section id="chatbox" class="chatbox" aria-hidden="true">
+  <header class="chatbox__header">
+    <div class="chatbox__title">
+      <div class="chatbox__avatar">B</div>
+      <div>
+        <div class="chatbox__name">Baron</div>
+        <div class="chatbox__status"><span class="dot"></span> MyCU Virtual Assistant</div>
+      </div>
+    </div>
+    <div class="chatbox__actions">
+      <button id="chat-reset" class="icon-btn" title="Start a new chat" aria-label="Start a new chat">&#8635;</button>
+      <button id="chat-close" class="icon-btn" title="Close" aria-label="Close">&times;</button>
+    </div>
+  </header>
+
+  <div id="messages" class="chatbox__messages" role="log" aria-live="polite"></div>
+
+  <div id="quick-actions" class="chatbox__quick">
+    <button class="chip" data-q="How do I change my MyCU password?">Change password</button>
+    <button class="chip" data-q="Who is the president of Carolina University?">Who's the president?</button>
+    <button class="chip" data-q="What undergraduate programs does Carolina University offer?">Programs</button>
+    <button class="chip" data-q="How much is tuition at Carolina University?">Tuition</button>
+    <button class="chip" data-q="How do I contact the Helpdesk?">Helpdesk</button>
+    <button class="chip" data-q="How do I register for courses?">Register for courses</button>
+  </div>
+
+  <form id="chat-form" class="chatbox__input" autocomplete="off">
+    <textarea id="chat-text" rows="1" placeholder="Ask Baron anything about MyCU..." required></textarea>
+    <button type="submit" aria-label="Send">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </form>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>
