@@ -35,29 +35,15 @@ html, body {
 .topbar-left {
   display: flex;
   align-items: center;
-  gap: 12px;
   height: 60px;
   flex-shrink: 0;
-  color: white;
 }
 
-.logo-shield {
-  width: 42px; height: 46px;
-  background: #facc15;
-  border-radius: 4px 4px 50% 50%;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  color: #0b3a75;
-  font-size: 15px;
-  letter-spacing: -0.3px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.logo {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
 }
-
-.school-info { line-height: 1.2; }
-.school-name { font-size: 15px; font-weight: 600; letter-spacing: 0.2px; }
-.school-sub { font-size: 10px; color: #facc15; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 2px; }
 
 .top-nav {
   display: flex;
@@ -199,7 +185,7 @@ p { font-size: 14px; margin: 0 0 8px; }
   background: #facc15;
   border: none;
   border-radius: 30px;
-  padding: 10px 18px 10px 10px;
+  padding: 8px 18px 8px 8px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -215,14 +201,14 @@ p { font-size: 14px; margin: 0 0 8px; }
 .help-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
 .help-btn:active { transform: scale(0.96); }
 
-.baron-face {
-  width: 34px; height: 34px;
+.help-btn img {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: white;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  padding: 4px;
+  object-fit: contain;
 }
-.baron-face svg { width: 22px; height: 22px; }
 
 /* ===== CHATBOX ===== */
 .chatbox {
@@ -388,7 +374,6 @@ p { font-size: 14px; margin: 0 0 8px; }
   border-top: 1px solid #e5e7eb;
   background: white;
   flex-shrink: 0;
-  position: relative;
 }
 .chatbox__input input {
   flex: 1;
@@ -438,10 +423,8 @@ p { font-size: 14px; margin: 0 0 8px; }
 @media (max-width: 768px) {
 
   .topbar { padding: 0 14px; min-height: 56px; }
-  .topbar-left { height: 56px; gap: 10px; }
-  .logo-shield { width: 34px; height: 38px; font-size: 13px; }
-  .school-name { font-size: 13px; }
-  .school-sub { font-size: 9px; letter-spacing: 1px; }
+  .topbar-left { height: 56px; }
+  .logo { height: 38px; }
 
   .menu-toggle { display: block; }
 
@@ -501,11 +484,10 @@ p { font-size: 14px; margin: 0 0 8px; }
   .help-btn {
     bottom: calc(16px + env(safe-area-inset-bottom));
     right: 16px;
-    padding: 8px 16px 8px 8px;
+    padding: 6px 14px 6px 6px;
     font-size: 13px;
   }
-  .baron-face { width: 30px; height: 30px; }
-  .baron-face svg { width: 18px; height: 18px; }
+  .help-btn img { width: 32px; height: 32px; }
 
   .chatbox {
     position: fixed;
@@ -547,11 +529,7 @@ p { font-size: 14px; margin: 0 0 8px; }
 
 <header class="topbar">
   <div class="topbar-left">
-    <div class="logo-shield">CU</div>
-    <div class="school-info">
-      <div class="school-name">Carolina University</div>
-      <div class="school-sub">MyCU Portal</div>
-    </div>
+    <img src="assets/logo.png" class="logo" alt="Carolina University">
   </div>
 
   <button class="menu-toggle" id="menu-toggle" aria-label="Open menu">&#9776;</button>
@@ -624,16 +602,7 @@ p { font-size: 14px; margin: 0 0 8px; }
 </div>
 
 <button id="chat-trigger" class="help-btn" aria-label="Open Baron assistant">
-  <div class="baron-face">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="4" y="8" width="16" height="11" rx="3" fill="#0b3a75"/>
-      <circle cx="9" cy="13" r="1.5" fill="white"/>
-      <circle cx="15" cy="13" r="1.5" fill="white"/>
-      <rect x="9" y="16" width="6" height="1.5" rx="0.75" fill="white"/>
-      <path d="M9 8V6a3 3 0 016 0v2" stroke="#0b3a75" stroke-width="1.5" stroke-linecap="round"/>
-      <circle cx="12" cy="5.5" r="1" fill="#0b3a75"/>
-    </svg>
-  </div>
+  <img src="assets/bot.png" alt="Baron">
   Ask Baron
 </button>
 
@@ -671,7 +640,8 @@ p { font-size: 14px; margin: 0 0 8px; }
 
   const API_URL = "/api/chat";
 
-  let conversationHistory = [];
+  const sessionId = Math.random().toString(36).substring(2);
+  let conversationStarted = false;
   let isLoading = false;
 
   const trigger      = document.getElementById("chat-trigger");
@@ -692,7 +662,10 @@ p { font-size: 14px; margin: 0 0 8px; }
 
   function openChat() {
     chatbox.classList.add("active");
-    if (conversationHistory.length === 0) showWelcome();
+    if (!conversationStarted) {
+      showWelcome();
+      conversationStarted = true;
+    }
     if (window.innerWidth > 768) setTimeout(() => input.focus(), 300);
   }
 
@@ -709,8 +682,7 @@ p { font-size: 14px; margin: 0 0 8px; }
   closeBtn.addEventListener("click", closeChat);
 
   resetBtn.addEventListener("click", () => {
-    if (conversationHistory.length > 0 && confirm("Start a new conversation?")) {
-      conversationHistory = [];
+    if (conversationStarted && confirm("Start a new conversation?")) {
       messagesEl.innerHTML = "";
       showWelcome();
     }
@@ -740,7 +712,6 @@ p { font-size: 14px; margin: 0 0 8px; }
 
   async function submitMessage(text) {
     appendMessage("user", text);
-    conversationHistory.push({ role: "user", content: text });
 
     setLoading(true);
     const typingEl = appendTyping();
@@ -749,13 +720,11 @@ p { font-size: 14px; margin: 0 0 8px; }
       const response = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: conversationHistory })
+        body: JSON.stringify({ message: text, sessionId: sessionId })
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "API error " + response.status);
 
+      const data = await response.json();
       const reply = data.reply || "I could not generate a response. Please try again.";
-      conversationHistory.push({ role: "assistant", content: reply });
 
       typingEl.remove();
       appendMessage("bot", reply);
